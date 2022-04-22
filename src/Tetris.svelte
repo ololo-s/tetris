@@ -1,13 +1,15 @@
 <script lang="ts">
     import Board from "./Board.svelte";
 
+    interface Dot {x: number, y: number}
+
     const height = 20
     const width = 10
     let board = Array(height).fill([]).map(() => Array(width).fill(' '))
 
-    const newDot = {y: 0, x: 4}
-    let dot = {...newDot}
-    let oldDot = {...dot}
+    const newDot: Dot = {y: 0, x: 4}
+    let dot: Dot = {...newDot}
+    let oldDot: Dot = {...dot}
 
     function handleKey(e: KeyboardEvent) {
         switch (e.key) {
@@ -42,7 +44,7 @@
         drawDot(dot)
     }
 
-    function handleDotFinalPosition(d: typeof d) {
+    function handleDotFinalPosition(d: Dot) {
         if (d.y >= height || board[d.y][d.x] != ' ') {
             clearInterval(fastTimer)
             d.y--
@@ -50,7 +52,7 @@
         }
     }
 
-    function drawDot(dot: typeof dot) {
+    function drawDot(dot: Dot) {
         board[oldDot.y][oldDot.x] = ' '
         board[dot.y][dot.x] = '.'
         oldDot = {...dot}
