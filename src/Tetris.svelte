@@ -37,8 +37,10 @@
 
     setInterval(() => dot.y++, 1000)
 
-    $: handleDotFinalPosition(dot)
-    $: drawDot(dot)
+    $: {
+        handleDotFinalPosition(dot)
+        drawDot(dot)
+    }
 
     function handleDotFinalPosition(d: typeof d) {
         if (d.y >= height || board[d.y][d.x] != ' ') {
