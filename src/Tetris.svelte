@@ -1,8 +1,12 @@
 <script lang="ts">
   import Board from "./Board.svelte";
 
-  let board = Array(20).fill([]).map(() => Array(10).fill(' '))
-  let dot = {y: 0, x: 4}
+  const height = 20
+  const width = 10
+  let board = Array(height).fill([]).map(() => Array(width).fill(' '))
+
+  const newDot = {y: 0, x: 4}
+  let dot = {...newDot}
   let oldDot = {...dot}
 
   function handleKey(e: KeyboardEvent) {
@@ -20,16 +24,22 @@
 
   function moveRight() {
       dot.x++
-      if (dot.x >= board[0].length) dot.x = board[0].length - 1
+      if (dot.x >= width) dot.x--
   }
 
   function fastDown() {
-      setInterval (() => dot.y++, 50)
+      const timer = setInterval(() => {
+          dot.y++
+          if (dot.y >= height) clearInterval(timer)
+      }, 50)
   }
 
-  setInterval(() => {
-      dot.y++
-  }, 1000)
+  setInterval(() => dot.y++, 1000)
+
+  $: if (dot.y >= height) {
+      dot.y--
+      oldDot = dot = {...newDot}
+  }
 
   $: {
       board[oldDot.y][oldDot.x] = ' '
@@ -41,3 +51,4 @@
 <svelte:window on:keydown={handleKey}/>
 
 <Board {board}/>
+{JSON.stringify(dot)}
