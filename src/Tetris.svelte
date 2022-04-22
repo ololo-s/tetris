@@ -9,15 +9,22 @@
       switch (e.key) {
           case 'ArrowLeft': return moveLeft()
           case 'ArrowRight': return moveRight()
+          case 'ArrowDown': return fastDown()
       }
   }
 
-  function moveLeft () {
+  function moveLeft() {
       dot.x--
+      if (dot.x < 0) dot.x = 0
   }
 
-  function moveRight () {
+  function moveRight() {
       dot.x++
+      if (dot.x >= board[0].length) dot.x = board[0].length - 1
+  }
+
+  function fastDown() {
+      setInterval (() => dot.y++, 50)
   }
 
   setInterval(() => {
