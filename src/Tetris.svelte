@@ -1,15 +1,32 @@
 <script lang="ts">
     import Board from "./Board.svelte";
 
-    interface Dot {x: number, y: number}
+    interface Dot {
+        x: number,
+        y: number,
+    }
+
+    type Figure = Dot[]
+
+    const figures: Figure[] = [
+        [{y: 0, x: 4}],
+        [{x: 4, y: 0}, {x: 5, y: 0}, {x: 4, y: 1}, {x: 5, y: 1}]
+    ]
 
     const height = 20
     const width = 10
     let board = Array(height).fill([]).map(() => Array(width).fill(' '))
+    let figure: Figure = deepCopy(figures[1])
+    let oldFigure: Figure = deepCopy(figure)
 
-    const newDot: Dot = {y: 0, x: 4}
-    let dot: Dot = {...newDot}
-    let oldDot: Dot = {...dot}
+    function deepCopy(figure: Figure): Figure {
+        return figure.map(d => ({...d}))
+    }
+
+    function changeFigure(each: (d: Dot) => void) {
+        figure.forEach(each)
+        figure = figure
+    }
 
     function handleKey(e: KeyboardEvent) {
         switch (e.key) {
@@ -23,43 +40,43 @@
     }
 
     function moveLeft() {
-        dot.x--
-        if (dot.x < 0) dot.x = 0
+        if (figure.every(d => d.x > 0))
+            changeFigure(d => d.x--)
     }
 
     function moveRight() {
-        dot.x++
-        if (dot.x >= width) dot.x--
+        if (figure.every(d => d.x < width - 1)) //добавлено -1
+            changeFigure(d => d.x++)
     }
 
     let fastTimer: any
     function fastDown() {
-        fastTimer = setInterval(() => dot.y++, 50)
+        fastTimer = setInterval(() => changeFigure(d => d.y++), 50)
     }
 
-    setInterval(() => dot.y++, 1000)
+    setInterval(() => changeFigure(d => d.y++), 1000)
 
     $: {
-        handleDotFinalPosition(dot)
-        drawDot(dot)
+        handleFinalPosition(figure)
+        drawFigure(figure)
     }
 
-    function handleDotFinalPosition(d: Dot) {
-        if (d.y >= height || board[d.y][d.x] != ' ') {
+    function handleFinalPosition(f: Figure) {
+        if (f.some(d => d.y >= height /*|| board[d.y][d.x] !== ' '*/)) {
             clearInterval(fastTimer)
-            d.y--
-            dot = oldDot = {...newDot}
+            changeFigure(d => d.y--)
+            figure = oldFigure = deepCopy(figures[1])
         }
     }
 
-    function drawDot(dot: Dot) {
-        board[oldDot.y][oldDot.x] = ' '
-        board[dot.y][dot.x] = '.'
-        oldDot = {...dot}
+    function drawFigure(figure: Figure) {
+        oldFigure.forEach(d => board[d.y][d.x] = ' ')
+        figure.forEach(d => board[d.y][d.x] = '.')
+        oldFigure = deepCopy(figure)
     }
 </script>
 
 <svelte:window on:keydown={handleKey}/>
 
 <Board {board}/>
-{JSON.stringify(dot)}
+{JSON.stringify(figure)}
