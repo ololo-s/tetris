@@ -49,7 +49,7 @@
             changeFigure(d => d.x++)
     }
 
-    let fastTimer: any  //?
+    let fastTimer: any
     function fastDown() {
         fastTimer = setInterval(() => changeFigure(d => d.y++), 50)
     }
@@ -71,7 +71,9 @@
     }
 
     function issueNewFigure() {
-        figure = oldFigure = deepCopy(figures[1])
+        figure = deepCopy(figures[1])
+        draw(figure)
+        oldFigure = deepCopy(figure)
     }
 
     function clear(f: Figure) {
