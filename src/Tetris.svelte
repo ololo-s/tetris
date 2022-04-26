@@ -45,34 +45,41 @@
     }
 
     function moveRight() {
-        if (figure.every(d => d.x < width - 1)) //добавлено -1
+        if (figure.every(d => d.x < width - 1))
             changeFigure(d => d.x++)
     }
 
-    let fastTimer: any
+    let fastTimer: any  //?
     function fastDown() {
         fastTimer = setInterval(() => changeFigure(d => d.y++), 50)
     }
 
     setInterval(() => changeFigure(d => d.y++), 1000)
 
-    $: {
-        handleFinalPosition(figure)
-        drawFigure(figure)
-    }
+    $: processStep(figure)
 
-    function handleFinalPosition(f: Figure) {
-        if (f.some(d => d.y >= height /*|| board[d.y][d.x] !== ' '*/)) {
+    function processStep(figure: Figure) {
+        clearOldFigure()
+        if (figure.some(d => d.y >= height || board[d.y][d.x] !== ' ')) {
             clearInterval(fastTimer)
-            changeFigure(d => d.y--)
-            figure = oldFigure = deepCopy(figures[1])
+            figure.forEach(d => d.y--)
+            issueNewFigure()
+        } else {
+            oldFigure = deepCopy(figure)
         }
+        drawNewFigure(figure)
     }
 
-    function drawFigure(figure: Figure) {
+    function issueNewFigure() {
+        figure = oldFigure = deepCopy(figures[1])
+    }
+
+    function clearOldFigure() {
         oldFigure.forEach(d => board[d.y][d.x] = ' ')
+    }
+
+    function drawNewFigure(figure: Dot[]) {
         figure.forEach(d => board[d.y][d.x] = '.')
-        oldFigure = deepCopy(figure)
     }
 </script>
 
@@ -80,3 +87,5 @@
 
 <Board {board}/>
 {JSON.stringify(figure)}
+
+
