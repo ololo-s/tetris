@@ -59,7 +59,7 @@
     $: processStep(figure)
 
     function processStep(figure: Figure) {
-        clearOldFigure()
+        clear(oldFigure)
         if (figure.some(d => d.y >= height || board[d.y][d.x] !== ' ')) {
             clearInterval(fastTimer)
             figure.forEach(d => d.y--)
@@ -67,19 +67,19 @@
         } else {
             oldFigure = deepCopy(figure)
         }
-        drawNewFigure(figure)
+        draw(figure)
     }
 
     function issueNewFigure() {
         figure = oldFigure = deepCopy(figures[1])
     }
 
-    function clearOldFigure() {
-        oldFigure.forEach(d => board[d.y][d.x] = ' ')
+    function clear(f: Figure) {
+        f.forEach(d => board[d.y][d.x] = ' ')
     }
 
-    function drawNewFigure(figure: Dot[]) {
-        figure.forEach(d => board[d.y][d.x] = '.')
+    function draw(f: Dot[]) {
+        f.forEach(d => board[d.y][d.x] = '.')
     }
 </script>
 
