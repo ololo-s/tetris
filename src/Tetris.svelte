@@ -16,8 +16,8 @@
     const height = 20
     const width = 10
     let board = Array(height).fill([]).map(() => Array(width).fill(' '))
-    let figure: Figure = deepCopy(figures[1])
-    let oldFigure: Figure = deepCopy(figure)
+    let figure: Figure, oldFigure: Figure
+    issueNewFigure()
 
     function deepCopy(figure: Figure): Figure {
         return figure.map(d => ({...d}))
