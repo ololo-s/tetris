@@ -8,15 +8,6 @@
     let figure: Figure, oldFigure: Figure
     issueNewFigure()
 
-    function deepCopy(figure: Figure): Figure {
-        return figure.map(d => ({...d}))
-    }
-
-    function changeFigure(each: (d: Dot) => void) {
-        figure.forEach(each)
-        figure = figure
-    }
-
     function handleKey(e: KeyboardEvent) {
         switch (e.key) {
             case 'ArrowLeft':
@@ -29,44 +20,44 @@
     }
 
     function moveLeft() {
-        if (figure.every(d => d.x > 0))
-            changeFigure(d => d.x--)
+        if (figure.dots.every(d => d.x > 0))
+            figure = figure.move(-1)
     }
 
     function moveRight() {
-        if (figure.every(d => d.x < width - 1))
-            changeFigure(d => d.x++)
+        if (figure.dots.every(d => d.x < width - 1))
+            figure = figure.move(+1)
     }
 
     let fastTimer: any
     function fastDown() {
-        fastTimer = setInterval(() => changeFigure(d => d.y++), 50)
+        fastTimer = setInterval(() => figure = figure.move(0, +1), 50)
     }
 
-    setInterval(() => changeFigure(d => d.y++), 1000)
+    setInterval(() => figure = figure.move(0, +1), 1000)
 
     $: processStep(figure)
 
     function processStep(figure: Figure) {
         clear(oldFigure)
-        if (figure.some(d => d.y >= height || board[d.y][d.x] !== ' ')) {
+        if (figure.dots.some(d => d.y >= height || board[d.y][d.x] !== ' ')) {
             clearInterval(fastTimer)
-            figure.forEach(d => d.y--)
+            figure.move(0, -1)
             issueNewFigure()
         } else {
-            oldFigure = deepCopy(figure)
+            oldFigure = figure.deepCopy()
         }
-        draw(figure)
+        draw(figure.dots)
     }
 
     function issueNewFigure() {
-        figure = deepCopy(randomFigure())
-        draw(figure)
-        oldFigure = deepCopy(figure)
+        figure = randomFigure()
+        draw(figure.dots)
+        oldFigure = figure.deepCopy()
     }
 
     function clear(f: Figure) {
-        f.forEach(d => board[d.y][d.x] = ' ')
+        f.dots.forEach(d => board[d.y][d.x] = ' ')
     }
 
     function draw(f: Dot[]) {
