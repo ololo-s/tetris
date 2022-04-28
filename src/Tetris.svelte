@@ -32,11 +32,6 @@
     let figure: Figure, oldFigure: Figure
     issueNewFigure()
 
-    function randomFigure() {
-        figureId = Math.floor(Math.random() * figures.length)
-        return figureId
-    }
-
     function deepCopy(figure: Figure): Figure {
         return figure.map(d => ({...d}))
     }
@@ -88,8 +83,13 @@
         draw(figure)
     }
 
+    function randomFigure(): Figure {
+        figureId = Math.floor(Math.random() * figures.length)
+        return figures[figureId]
+    }
+
     function issueNewFigure() {
-        figure = deepCopy(figures[1])
+        figure = deepCopy(randomFigure())
         draw(figure)
         oldFigure = deepCopy(figure)
     }
