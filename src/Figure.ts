@@ -10,6 +10,8 @@ export class Figure {
         public dots: Dot[]
     ) {}
 
+
+    // vitest deepCopy, move
     deepCopy(): Figure {
         return new Figure(this.dots.map(d => ({...d})))
     }
@@ -22,8 +24,10 @@ export class Figure {
 
 export default Figure
 
+// TODO: vitest
+
 const figures: Figure[] = [
-    new Figure([{x: 4, y: 0}, {x: 5, y: 0}, {x: 4, y: 1}, {x: 5, y: 1}]), //квадрат
+    new Figure([new Dot(4, 0), new Dot(5, 0), new Dot(4, 1),  new Dot(5, 1)]), //квадрат
 
     new Figure([{x: 3, y: 0}, {x: 4, y: 0}, {x: 5, y: 0}, {x: 6, y: 0}]), // палка
     // [{x: 4, y: 0}, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}], палка перевер
