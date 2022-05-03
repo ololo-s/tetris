@@ -23,10 +23,6 @@ export class Figure {
     }
 
     turn(): Figure {
-        //узнать индекс текущей фигуры
-        //если 0 - не переворачивается
-        //если 1 и 4 - есть два поворота
-        //если 2 и 3 - есть 4 поворота
         this.lastTurnIndex++
         if (this.lastTurnIndex >= this.turns.length) this.lastTurnIndex = 0
         this.dots = this.turns[this.lastTurnIndex] //+знач Y для всех после move, знач X -/+ после left/right
