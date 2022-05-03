@@ -31,6 +31,7 @@
 
     let fastTimer: any
     function fastDown() {
+        clearInterval(fastTimer)
         fastTimer = setInterval(() => figure = figure.move(0, +1), 50)
     }
 
