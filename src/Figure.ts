@@ -11,6 +11,8 @@ export class Figure {
         this.dots = this.turns[0]
     }
 
+    shiftX = 0
+    shiftY = 0
     lastTurnIndex = 0
 
     deepCopy(): Figure {
@@ -19,13 +21,16 @@ export class Figure {
 
     move(x: number, y: number = 0): Figure {
         this.dots.forEach(d => {d.x += x; d.y += y})
-        return this.deepCopy()   // add deepCopy
+        this.shiftX += x;
+        this.shiftY += y;
+        return this.deepCopy()
     }
 
     turn(): Figure {
         this.lastTurnIndex++
         if (this.lastTurnIndex >= this.turns.length) this.lastTurnIndex = 0
-        this.dots = this.turns[this.lastTurnIndex] //+знач Y для всех после move, знач X -/+ после left/right
+        this.dots = this.turns[this.lastTurnIndex]
+        this.dots.forEach(d => {d.x += this.shiftX; d.y += this.shiftY})
         return this
     }
 }

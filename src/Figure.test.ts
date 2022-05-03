@@ -31,3 +31,11 @@ it('turns', () => {
     expect(figure.turn().dots).to.deep.eq(turn1)
     expect(figure.turn().dots).to.deep.eq(turn2)
 })
+
+it('turns after moving', () => {
+    const turn = [new Dot(2, 2)]
+    const figure = new Figure([[new Dot(1, 1)], turn])
+    figure.move(1, 2)
+    figure.move(2, 3)
+    expect(figure.turn().dots).to.deep.eq([new Dot(5, 7)])
+})
