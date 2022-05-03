@@ -6,6 +6,7 @@
     const width = 10
     let board = Array(height).fill([]).map(() => Array(width).fill(' '))
     let figure: Figure, oldFigure: Figure
+
     issueNewFigure()
 
     function handleKey(e: KeyboardEvent) {
@@ -16,6 +17,8 @@
                 return moveRight()
             case 'ArrowDown':
                 return fastDown()
+            case 'ArrowUp':
+                return figure = figure.turn()
         }
     }
 

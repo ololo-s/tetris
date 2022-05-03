@@ -6,17 +6,32 @@ export class Dot {
 }
 
 export class Figure {
-    constructor(
-        public dots: Dot[]
-    ) {}
+    public dots: Dot[]
+    constructor(public turns: Dot[][]) {
+        this.dots = this.turns[0]
+    }
 
+    lastTurnIndex = 0
 
     deepCopy(): Figure {
-        return new Figure(this.dots.map(d => new Dot(d.x, d.y)))
+        return new Figure(this.turns.map(dots => dots.map(d => new Dot(d.x, d.y))))
     }
 
     move(x: number, y: number = 0): Figure {
         this.dots.forEach(d => {d.x += x; d.y += y})
+        return this.deepCopy()   // add deepCopy
+    }
+
+    turn(): Figure {
+        //узнать индекс текущей фигуры
+        //если 0 - не переворачивается
+        //если 1 и 4 - есть два поворота
+        //если 2 и 3 - есть 4 поворота
+        this.lastTurnIndex++
+        if (this.lastTurnIndex < 4) {
+           this.dots = this.turns[this.lastTurnIndex] //+знач Y для всех после move, знач X -/+ после left/right
+        }
+        else this.lastTurnIndex = 0
         return this
     }
 }
@@ -24,25 +39,23 @@ export class Figure {
 export default Figure
 
 const figures: Figure[] = [
-    new Figure([new Dot(4, 0), new Dot(5, 0), new Dot(4, 1),  new Dot(5, 1)]), //квадрат
+    new Figure([[new Dot(4, 0), new Dot(5, 0), new Dot(4, 1),  new Dot(5, 1)]]), //квадрат
 
-    new Figure([{x: 3, y: 0}, {x: 4, y: 0}, {x: 5, y: 0}, {x: 6, y: 0}]), // палка
-    // [{x: 4, y: 0}, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}], палка перевер
+    new Figure([[new Dot(3, 0), new Dot(4, 0), new Dot(5, 0), new Dot(6, 0)],
+        [new Dot(4, 0), new Dot(4, 1), new Dot(4, 2), new Dot(4, 3)]]), // палка
 
-    new Figure([{x: 5, y: 0}, {x: 4, y: 1}, {x: 5, y: 1}, {x: 6, y: 1}]),
-    // [{x: 5, y: 0}, {x: 4, y: 1}, {x: 5, y: 1}, {x: 5, y: 2}], //торт 1влево
-    // [{x: 4, y: 0}, {x: 5, y: 0}, {x: 6, y: 0}, {x: 5, y: 1}], //торт 2 влево/2вправо
-    // [{x: 5, y: 0}, {x: 5, y: 1}, {x: 6, y: 1}, {x: 5, y: 2}], //торт 3 влево/1 вправо
+    new Figure([[new Dot(5, 0), new Dot(4, 1), new Dot(5, 1), new Dot(6, 1)], //торт
+            [new Dot(5, 0), new Dot(4, 1), new Dot(5, 1), new Dot(5, 2)], //1лев
+            [new Dot(4, 0), new Dot(5, 0), new Dot(6, 0), new Dot(5, 1)], //2лев-2пр
+            [new Dot(5, 0), new Dot(5, 1), new Dot(6, 1), new Dot(5, 2)]]),//3лев-1пр
 
+    new Figure([[new Dot(4, 0), new Dot(4, 1), new Dot(4, 2), new Dot(5, 2)], //L
+            [new Dot(6, 0), new Dot(4, 1), new Dot(5, 1), new Dot(6, 1)], //1лев
+            [new Dot(4, 0), new Dot(5, 0), new Dot(5, 1), new Dot(5, 2)], //2лев-2пр
+            [new Dot(4, 0), new Dot(5, 0), new Dot(6, 0), new Dot(6, 1)],]),
 
-    new Figure([{x: 4, y: 0}, {x: 4, y: 1}, {x: 4, y: 2}, {x: 5, y: 2}]),
-    // [{x: 6, y: 0}, {x: 4, y: 1}, {x: 5, y: 1}, {x: 6, y: 1}], // L 1 влево
-    // [{x: 4, y: 0}, {x: 5, y: 0}, {x: 5, y: 1}, {x: 5, y: 2}], // L 2 влево/ 2 вправо
-    // [{x: 4, y: 0}, {x: 5, y: 0}, {x: 6, y: 0}, {x: 6, y: 1}], // L 3 влево/ 1 вправо
-
-
-    new Figure([{x: 5, y: 0}, {x: 6, y: 0}, {x: 4, y: 1}, {x: 5, y: 1}])
-    // [{x: 4, y: 0}, {x: 4, y: 1}, {x: 5, y: 1}, {x: 5, y: 2}] //z 1 влево/1 вправо
+    new Figure([[new Dot(5, 0), new Dot(6, 0), new Dot(4, 1), new Dot(5, 1)], //Z
+            [new Dot(4, 0), new Dot(4, 1), new Dot(5, 1), new Dot(5, 2)]]) //лев-пр
 ]
 
 export function randomFigure(): Figure {
