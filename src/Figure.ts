@@ -11,9 +11,9 @@ export class Figure {
         this.dots = this.turns[0]
     }
 
-    shiftX = 0
-    shiftY = 0
-    lastTurnIndex = 0
+    private shiftX = 0
+    private shiftY = 0
+    private lastTurnIndex = 0
 
     deepCopy(): Figure {
         return new Figure(this.turns.map(dots => dots.map(d => new Dot(d.x, d.y))))
@@ -23,7 +23,7 @@ export class Figure {
         this.dots.forEach(d => {d.x += x; d.y += y})
         this.shiftX += x;
         this.shiftY += y;
-        return this.deepCopy()
+        return this
     }
 
     turn(): Figure {
