@@ -5,18 +5,22 @@ export class Dot {
     ) {}
 }
 
+function deepCopyDots(dots: Dot[], shiftX = 0, shiftY = 0) {
+    return dots.map(d => new Dot(d.x + shiftX, d.y + shiftY))
+}
+
 export class Figure {
-    public dots: Dot[]
-    constructor(public turns: Dot[][]) {
-        this.dots = this.turns[0]
-    }
+    constructor(
+        public turns: Dot[][],
+        public dots: Dot[] = deepCopyDots(turns[0])
+    ) {}
 
     private shiftX = 0
     private shiftY = 0
     private lastTurnIndex = 0
 
     deepCopy(): Figure {
-        return new Figure(this.turns.map(dots => dots.map(d => new Dot(d.x, d.y))))
+        return new Figure(this.turns, deepCopyDots(this.dots))
     }
 
     move(x: number, y: number = 0): Figure {
@@ -29,8 +33,7 @@ export class Figure {
     turn(): Figure {
         this.lastTurnIndex++
         if (this.lastTurnIndex >= this.turns.length) this.lastTurnIndex = 0
-        this.dots = this.turns[this.lastTurnIndex]
-        this.dots.forEach(d => {d.x += this.shiftX; d.y += this.shiftY})
+        this.dots = deepCopyDots(this.turns[this.lastTurnIndex], this.shiftX, this.shiftY)
         return this
     }
 }
