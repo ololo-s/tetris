@@ -1,6 +1,7 @@
 <script lang="ts">
-    import Board from "./Board.svelte";
+    import DrawBoard from "./DrawBoard.svelte";
     import Figure, {Dot, randomFigure} from "./Figure";
+    import {removeFilledRow} from "./Board";
 
     const height = 20
     const width = 10
@@ -17,8 +18,12 @@
                 return moveRight()
             case 'ArrowDown':
                 return fastDown()
-            case 'ArrowUp':
-                return figure = figure.turn()
+            case '29':
+                return pause()
+            case 'ArrowUp': {
+                figure = figure.turn()
+                console.log('turned', figure.deepCopy(), oldFigure.deepCopy())
+            }
         }
     }
 
@@ -40,10 +45,15 @@
 
     setInterval(() => figure = figure.move(0, +1), 1000)
 
+    function pause() {
+
+    }
+
     $: processStep(figure)
 
     function processStep(figure: Figure) {
         clear(oldFigure)
+        removeFilledRow(board)
         if (figure.dots.some(d => d.y >= height || board[d.y][d.x] !== ' ')) {
             clearInterval(fastTimer)
             figure.move(0, -1)
@@ -71,7 +81,7 @@
 
 <svelte:window on:keydown={handleKey}/>
 
-<Board {board}/>
+<DrawBoard {board}/>
 {JSON.stringify(figure)}
 
 
