@@ -1,11 +1,9 @@
 <script lang="ts">
     import DrawBoard from "./DrawBoard.svelte";
     import Figure, {Dot, randomFigure} from "./Figure";
-    import {removeFilledRow} from "./Board";
+    import Board from "./Board";
 
-    const height = 20
-    const width = 10
-    let board = Array(height).fill([]).map(() => Array(width).fill(' '))
+    let board = new Board()
     let figure: Figure, oldFigure: Figure
 
     issueNewFigure()
@@ -18,11 +16,10 @@
                 return moveRight()
             case 'ArrowDown':
                 return fastDown()
-            case '29':
-                return pause()
+            case 'Shift':
+                return pauseGame()
             case 'ArrowUp': {
                 figure = figure.turn()
-                console.log('turned', figure.deepCopy(), oldFigure.deepCopy())
             }
         }
     }
@@ -33,28 +30,40 @@
     }
 
     function moveRight() {
-        if (figure.dots.every(d => d.x < width - 1))
+        if (figure.dots.every(d => d.x < board.width - 1))
             figure = figure.move(+1)
     }
 
     let fastTimer: any
+    let commonTimer: any
+
     function fastDown() {
         clearInterval(fastTimer)
         fastTimer = setInterval(() => figure = figure.move(0, +1), 50)
     }
 
-    setInterval(() => figure = figure.move(0, +1), 1000)
+    function startGameTimer() {
+        commonTimer = setInterval(() => figure = figure.move(0, +1), 1000)
+    }
 
-    function pause() {
+    startGameTimer()
 
+    function pauseGame() {
+        clearInterval(fastTimer)
+        if (commonTimer) {
+            clearInterval(commonTimer)
+            commonTimer = undefined
+        } else {
+            startGameTimer()
+        }
     }
 
     $: processStep(figure)
 
     function processStep(figure: Figure) {
         clear(oldFigure)
-        removeFilledRow(board)
-        if (figure.dots.some(d => d.y >= height || board[d.y][d.x] !== ' ')) {
+        board.removeFilledRows()
+        if (figure.dots.some(d => d.y >= board.height || board.cells[d.y][d.x] !== ' ')) {
             clearInterval(fastTimer)
             figure.move(0, -1)
             issueNewFigure()
@@ -71,17 +80,16 @@
     }
 
     function clear(f: Figure) {
-        f.dots.forEach(d => board[d.y][d.x] = ' ')
+        f.dots.forEach(d => board.cells[d.y][d.x] = ' ')
     }
 
     function draw(f: Dot[]) {
-        f.forEach(d => board[d.y][d.x] = '.')
+        f.forEach(d => board.cells[d.y][d.x] = '.')
     }
 </script>
 
 <svelte:window on:keydown={handleKey}/>
 
 <DrawBoard {board}/>
-{JSON.stringify(figure)}
 
 

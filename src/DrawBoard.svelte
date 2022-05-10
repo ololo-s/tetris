@@ -1,9 +1,11 @@
 <script lang="ts">
-    export let board: string[][]
+    import Board from "./Board";
+
+    export let board: Board
 </script>
 
 <div class="field">
-  {#each board as row}
+  {#each board.cells as row}
     <div class="row">
       {#each row as cell}
         <div class="cell" class:color={cell != ' '}></div>
