@@ -1,6 +1,6 @@
 <script lang="ts">
     import DrawBoard from "./DrawBoard.svelte";
-    import Figure, {Dot, randomFigure} from "./Figure";
+    import Figure, {randomFigure} from "./Figure";
     import Board from "./Board";
 
     let board = new Board()
@@ -61,7 +61,7 @@
     $: processStep(figure)
 
     function processStep(figure: Figure) {
-        clear(oldFigure)
+        board.clear(oldFigure)
         board.removeFilledRows()
         if (figure.dots.some(d => d.y >= board.height || board.cells[d.y][d.x] !== ' ')) {
             clearInterval(fastTimer)
@@ -70,22 +70,28 @@
         } else {
             oldFigure = figure.deepCopy()
         }
-        draw(figure.dots)
+        // board.draw(figure.dots)
+        board.draw(figure)
+
     }
 
     function issueNewFigure() {
         figure = randomFigure()
-        draw(figure.dots)
+        // board.draw(figure.dots)
+        board.draw(figure)
         oldFigure = figure.deepCopy()
     }
 
-    function clear(f: Figure) {
-        f.dots.forEach(d => board.cells[d.y][d.x] = ' ')
-    }
 
-    function draw(f: Dot[]) {
-        f.forEach(d => board.cells[d.y][d.x] = '.')
-    }
+    // function clear(f: Figure) {
+    //     board.clear(figure)
+    //     f.dots.forEach(d => board.cells[d.y][d.x] = ' ')
+    // }
+
+    // function draw(f: Dot[]) {
+    //     board.draw(figure)
+    // //     f.forEach(d => board.cells[d.y][d.x] = '.')
+    // }
 </script>
 
 <svelte:window on:keydown={handleKey}/>

@@ -1,5 +1,7 @@
 import {expect} from "vitest";
 import Board from "./Board";
+import Figure, {Dot} from "./Figure";
+
 
 it('removes filled row from board', () => {
     const board = new Board(3, 2, Array(3).fill([]).map(() => Array(2).fill(' ')))
@@ -23,4 +25,19 @@ it('removes filled rows from board', () => {
     expect(board.cells[0].every(d => d === ' ')).to.true
     expect(board.cells[1].every(d => d === ' ')).to.true
     expect(board.cells[2].every(d => d === ' ')).to.true
+})
+
+it('draws and clear figure from board', () => {
+    const board = new Board(5, 5)
+    const figure = new Figure([[new Dot(2, 0), new Dot(3, 0)]])
+
+    board.draw(figure)
+
+    expect(board.cells[0][2]).to.eq('.')
+    expect(board.cells[0][3]).to.eq('.')
+
+    board.clear(figure)
+
+    expect(board.cells[0][2]).to.eq(' ')
+    expect(board.cells[0][3]).to.eq(' ')
 })

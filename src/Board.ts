@@ -1,3 +1,5 @@
+import type Figure from "./Figure"
+
 export default class Board {
     constructor(
         public height = 20,
@@ -12,5 +14,13 @@ export default class Board {
                 this.cells[0] = this.cells[0].map(d => ' ')
             }
         }
+    }
+
+    draw(f: Figure, c = '.') {
+        f.dots.forEach(d => this.cells[d.y][d.x] = c)
+    }
+
+    clear(f: Figure) {
+        this.draw(f, ' ')
     }
 }
