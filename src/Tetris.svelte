@@ -25,12 +25,12 @@
     }
 
     function moveLeft() {
-        if (figure.dots.every(d => d.x > 0))
+        if (board.hasSpaceOnLeft(figure))
             figure = figure.move(-1)
     }
 
     function moveRight() {
-        if (figure.dots.every(d => d.x < board.width - 1))
+        if (board.hasSpaceOnRight(figure))
             figure = figure.move(+1)
     }
 
@@ -61,8 +61,8 @@
     $: processStep(figure)
 
     function processStep(figure: Figure) {
-        board.clear(oldFigure)
-        board.removeFilledRows()
+        board = board.clear(oldFigure)
+        board = board.removeFilledRows()
         if (board.isInvalidPosition(figure)) {
             clearInterval(fastTimer)
             figure.move(0, -1)
@@ -70,8 +70,7 @@
         } else {
             oldFigure = figure.deepCopy()
         }
-        board.draw(figure)
-
+        board = board.draw(figure)
     }
 
     function issueNewFigure() {

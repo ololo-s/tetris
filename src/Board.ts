@@ -14,17 +14,27 @@ export default class Board {
                 this.cells[0] = this.cells[0].map(() => ' ')
             }
         }
+        return this
     }
 
     draw(f: Figure, c = '.') {
         f.dots.forEach(d => this.cells[d.y][d.x] = c)
+        return this
     }
 
     clear(f: Figure) {
-        this.draw(f, ' ')
+        return this.draw(f, ' ')
     }
 
     isInvalidPosition(f: Figure) {
         return f.dots.some(d => d.y >= this.height || this.cells[d.y][d.x] !== ' ')
+    }
+
+    hasSpaceOnLeft(f: Figure) {
+        return f.dots.every(d => d.x > 0)
+    }
+
+    hasSpaceOnRight(f: Figure) {
+        return f.dots.every(d => d.x < this.width - 1)
     }
 }

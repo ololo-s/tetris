@@ -56,3 +56,15 @@ it('figures do overlap', () => {
     expect(board.isInvalidPosition(new Figure([[new Dot(0, 0), new Dot(1, 0)]]))).to.be.true
     expect(board.isInvalidPosition(new Figure([[new Dot(0, 1), new Dot(1, 1)]]))).to.be.false
 })
+
+it('figures are within the left and right borders', () => {
+    const board = new Board(2, 2)
+
+    expect(board.hasSpaceOnLeft(new Figure([[new Dot(0, 0)]]))).to.be.false
+    expect(board.hasSpaceOnLeft(new Figure([[new Dot(-1, 0)]]))).to.be.false
+    expect(board.hasSpaceOnLeft(new Figure([[new Dot(1, 0)]]))).to.be.true
+
+    expect(board.hasSpaceOnRight(new Figure([[new Dot(1, 1)]]))).to.be.false
+    expect(board.hasSpaceOnRight(new Figure([[new Dot(2, 0)]]))).to.be.false
+    expect(board.hasSpaceOnRight(new Figure([[new Dot(0, 0)]]))).to.be.true
+})
