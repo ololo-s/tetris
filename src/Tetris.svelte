@@ -63,35 +63,22 @@
     function processStep(figure: Figure) {
         board.clear(oldFigure)
         board.removeFilledRows()
-        if (figure.dots.some(d => d.y >= board.height || board.cells[d.y][d.x] !== ' ')) {
+        if (board.isInvalidPosition(figure)) {
             clearInterval(fastTimer)
             figure.move(0, -1)
             issueNewFigure()
         } else {
             oldFigure = figure.deepCopy()
         }
-        // board.draw(figure.dots)
         board.draw(figure)
 
     }
 
     function issueNewFigure() {
         figure = randomFigure()
-        // board.draw(figure.dots)
         board.draw(figure)
         oldFigure = figure.deepCopy()
     }
-
-
-    // function clear(f: Figure) {
-    //     board.clear(figure)
-    //     f.dots.forEach(d => board.cells[d.y][d.x] = ' ')
-    // }
-
-    // function draw(f: Dot[]) {
-    //     board.draw(figure)
-    // //     f.forEach(d => board.cells[d.y][d.x] = '.')
-    // }
 </script>
 
 <svelte:window on:keydown={handleKey}/>

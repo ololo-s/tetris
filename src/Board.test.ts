@@ -4,7 +4,7 @@ import Figure, {Dot} from "./Figure";
 
 
 it('removes filled row from board', () => {
-    const board = new Board(3, 2, Array(3).fill([]).map(() => Array(2).fill(' ')))
+    const board = new Board(3, 2)
     board.cells[0][1] = '.'
     board.cells[1].fill('.')
     board.cells[2][0] = '.'
@@ -40,4 +40,19 @@ it('draws and clear figure from board', () => {
 
     expect(board.cells[0][2]).to.eq(' ')
     expect(board.cells[0][3]).to.eq(' ')
+})
+
+it('checks whether figure is outside the height of a board', () => {
+    const board = new Board(2, 2)
+    expect(board.isInvalidPosition(new Figure([[new Dot(0, 0), new Dot(1, 1)]]))).to.be.false
+    expect(board.isInvalidPosition(new Figure([[new Dot(0, 2), new Dot(1, 1)]]))).to.be.true
+    expect(board.isInvalidPosition(new Figure([[new Dot(0, 0), new Dot(1, 3)]]))).to.be.true
+})
+
+it('figures do overlap', () => {
+    const board = new Board(2, 2)
+    board.cells[0][0] = '.'
+
+    expect(board.isInvalidPosition(new Figure([[new Dot(0, 0), new Dot(1, 0)]]))).to.be.true
+    expect(board.isInvalidPosition(new Figure([[new Dot(0, 1), new Dot(1, 1)]]))).to.be.false
 })

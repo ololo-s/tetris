@@ -11,7 +11,7 @@ export default class Board {
         for (let i = 0; i < this.height; i++) {
             if (this.cells[i].every(d => d === '.')) {
                 this.cells.copyWithin(1, 0, i)
-                this.cells[0] = this.cells[0].map(d => ' ')
+                this.cells[0] = this.cells[0].map(() => ' ')
             }
         }
     }
@@ -22,5 +22,9 @@ export default class Board {
 
     clear(f: Figure) {
         this.draw(f, ' ')
+    }
+
+    isInvalidPosition(f: Figure) {
+        return f.dots.some(d => d.y >= this.height || this.cells[d.y][d.x] !== ' ')
     }
 }
