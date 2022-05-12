@@ -15,7 +15,7 @@
 
     main {
         text-align: center;
-        padding: 1em;
+        padding: 0.5em 1em;
         margin: 0 auto;
         max-width: 75%;
         background-color: #ddf5cf;
@@ -27,7 +27,7 @@
         text-transform: uppercase;
         font-size: 3rem;
         font-weight: 600;
-        line-height: 1.1;
+        line-height: 1;
         margin: 1rem auto;
         max-width: 14rem;
         text-shadow: #37422f 1px 2px;

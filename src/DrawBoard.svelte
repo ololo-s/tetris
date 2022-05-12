@@ -8,7 +8,7 @@
   {#each board.cells as row}
     <div class="row">
       {#each row as cell}
-        <div class="cell" class:color={cell != ' '}></div>
+        <div class="cell" class:color={cell !== ' '}></div>
       {/each}
     </div>
   {/each}
@@ -24,9 +24,9 @@
         flex-direction: column;
         align-items: center;
         margin: 0 auto;
-        padding: 20px;
+        padding: 25px 20px;
         background-color: #82bb60;
-        max-width: 50%;
+        max-width: 30%;
     }
 
     .cell {
@@ -37,6 +37,6 @@
 
     .cell.color {
         background-color: #457927;
-        box-shadow: inset 0px 0px 2px 3px #559430;
+        box-shadow: inset 0 0 2px 3px #559430;
     }
 </style>

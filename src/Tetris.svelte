@@ -2,9 +2,11 @@
     import DrawBoard from "./DrawBoard.svelte";
     import Figure, {randomFigure} from "./Figure";
     import Board from "./Board";
+    import Score from "./Score.svelte";
 
     let board = new Board()
     let figure: Figure, oldFigure: Figure
+    let score: number = 0
 
     issueNewFigure()
 
@@ -62,11 +64,12 @@
 
     function processStep(figure: Figure) {
         board = board.clear(oldFigure)
-        board = board.removeFilledRows()
+        score += board.removeFilledRows() * 10
         if (board.isInvalidPosition(figure)) {
             clearInterval(fastTimer)
             figure.move(0, -1)
             issueNewFigure()
+            score += 1
         } else {
             oldFigure = figure.deepCopy()
         }
@@ -83,5 +86,5 @@
 <svelte:window on:keydown={handleKey}/>
 
 <DrawBoard {board}/>
-
+<Score {score}/>
 
