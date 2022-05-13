@@ -5,7 +5,8 @@ export default class Board {
         public height = 20,
         public width = 10,
         public cells: string[][] = Array(height).fill([]).map(() => Array(width).fill(' ')),
-    ) {}
+    ) {
+    }
 
     removeFilledRows(): number {
         let rowCount = 0

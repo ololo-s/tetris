@@ -2,7 +2,8 @@ export class Dot {
     constructor(
         public x: number,
         public y: number,
-    ) {}
+    ) {
+    }
 }
 
 function deepCopyDots(dots: Dot[], shiftX = 0, shiftY = 0) {
@@ -13,7 +14,8 @@ export class Figure {
     constructor(
         public turns: Dot[][],
         public dots: Dot[] = deepCopyDots(turns[0])
-    ) {}
+    ) {
+    }
 
     private shiftX = 0
     private shiftY = 0
@@ -24,7 +26,10 @@ export class Figure {
     }
 
     move(x: number, y: number = 0): Figure {
-        this.dots.forEach(d => {d.x += x; d.y += y})
+        this.dots.forEach(d => {
+            d.x += x;
+            d.y += y
+        })
         this.shiftX += x;
         this.shiftY += y;
         return this
@@ -41,23 +46,23 @@ export class Figure {
 export default Figure
 
 const figures: Figure[] = [
-    new Figure([[new Dot(4, 0), new Dot(5, 0), new Dot(4, 1),  new Dot(5, 1)]]), //квадрат
+    new Figure([[new Dot(4, 0), new Dot(5, 0), new Dot(4, 1), new Dot(5, 1)]]), //квадрат
 
     new Figure([[new Dot(3, 0), new Dot(4, 0), new Dot(5, 0), new Dot(6, 0)],
         [new Dot(4, 0), new Dot(4, 1), new Dot(4, 2), new Dot(4, 3)]]), // палка
 
     new Figure([[new Dot(5, 0), new Dot(4, 1), new Dot(5, 1), new Dot(6, 1)], //торт
-            [new Dot(5, 0), new Dot(4, 1), new Dot(5, 1), new Dot(5, 2)], //1лев
-            [new Dot(4, 0), new Dot(5, 0), new Dot(6, 0), new Dot(5, 1)], //2лев-2пр
-            [new Dot(5, 0), new Dot(5, 1), new Dot(6, 1), new Dot(5, 2)]]),//3лев-1пр
+        [new Dot(5, 0), new Dot(4, 1), new Dot(5, 1), new Dot(5, 2)], //1лев
+        [new Dot(4, 0), new Dot(5, 0), new Dot(6, 0), new Dot(5, 1)], //2лев-2пр
+        [new Dot(5, 0), new Dot(5, 1), new Dot(6, 1), new Dot(5, 2)]]),//3лев-1пр
 
     new Figure([[new Dot(4, 0), new Dot(4, 1), new Dot(4, 2), new Dot(5, 2)], //L
-            [new Dot(6, 0), new Dot(4, 1), new Dot(5, 1), new Dot(6, 1)], //1лев
-            [new Dot(4, 0), new Dot(5, 0), new Dot(5, 1), new Dot(5, 2)], //2лев-2пр
-            [new Dot(4, 0), new Dot(5, 0), new Dot(6, 0), new Dot(6, 1)],]),
+        [new Dot(6, 0), new Dot(4, 1), new Dot(5, 1), new Dot(6, 1)], //1лев
+        [new Dot(4, 0), new Dot(5, 0), new Dot(5, 1), new Dot(5, 2)], //2лев-2пр
+        [new Dot(4, 0), new Dot(5, 0), new Dot(6, 0), new Dot(6, 1)],]),
 
     new Figure([[new Dot(5, 0), new Dot(6, 0), new Dot(4, 1), new Dot(5, 1)], //Z
-            [new Dot(4, 0), new Dot(4, 1), new Dot(5, 1), new Dot(5, 2)]]) //лев-пр
+        [new Dot(4, 0), new Dot(4, 1), new Dot(5, 1), new Dot(5, 2)]]) //лев-пр
 ]
 
 export function randomFigure(): Figure {

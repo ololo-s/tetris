@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Tetris from "./Tetris.svelte";
+    import Tetris from "./Tetris.svelte";
 </script>
 
 <main>

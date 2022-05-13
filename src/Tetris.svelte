@@ -68,8 +68,8 @@
         if (board.isInvalidPosition(figure)) {
             clearInterval(fastTimer)
             figure.move(0, -1)
-            issueNewFigure()
             score += 1
+            issueNewFigure()
         } else {
             oldFigure = figure.deepCopy()
         }
@@ -78,8 +78,17 @@
 
     function issueNewFigure() {
         figure = randomFigure()
+        if (board.isInvalidPosition(figure)) {
+            return gameOver()
+        }
         board.draw(figure)
         oldFigure = figure.deepCopy()
+    }
+
+    function gameOver() {
+        alert(`Game over, score: ${score}. Start`)
+        score = 0
+        board = new Board()
     }
 </script>
 
