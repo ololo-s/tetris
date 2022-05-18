@@ -3,20 +3,24 @@ import {render} from '@testing-library/svelte';
 import {expect} from "vitest";
 import {tick} from "svelte";
 
+beforeEach(() => {
+    vi.useFakeTimers()
+})
+
+afterEach(() => {
+    vi.restoreAllMocks()
+})
 
 it('renders board and first figure', async () => {
-    vi.useFakeTimers()
     const {container} = render(Tetris)
     expect(container.textContent).to.contain('Score: 0')
     const cells = [...container.querySelectorAll('.cell')]
     expect(cells).to.have.length(200)
     vi.advanceTimersByTime(1000)
     expect(cells.some(cell => cell.classList.contains('color'))).to.be.true
-    vi.restoreAllMocks()
 })
 
 it('game ending with the alert',  async () => {
-    vi.useFakeTimers()
     const alert = vi.spyOn(window, 'alert').mockReturnValue(undefined)
 
     const {component} = render(Tetris)
@@ -30,5 +34,4 @@ it('game ending with the alert',  async () => {
     expect(component.score).toBeGreaterThan(0)
     expect(alert).toBeCalled()
     expect(alert['calls'][0][0]).to.match(/Game over, score: \d+. Press OK to start again/)
-    vi.restoreAllMocks()
 })
