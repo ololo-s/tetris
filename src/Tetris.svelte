@@ -6,7 +6,7 @@
 
     let board = new Board()
     let figure: Figure, oldFigure: Figure
-    let score: number = 0
+    export let score: number = 0
 
     issueNewFigure()
 
@@ -86,12 +86,15 @@
     }
 
     function gameOver() {
-        alert(`Game over, score: ${score}. Start`)
+        pauseGame()
+        alert(`Game over, score: ${score}. Press OK to start again`)
+        startGameTimer()
         score = 0
         board = new Board()
     }
 </script>
 
+<svelte:options accessors/>
 <svelte:window on:keydown={handleKey}/>
 
 <DrawBoard {board}/>

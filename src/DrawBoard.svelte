@@ -4,7 +4,7 @@
     export let board: Board
 </script>
 
-<div class="field">
+<div class="board">
   {#each board.cells as row}
     <div class="row">
       {#each row as cell}
@@ -19,7 +19,7 @@
         display: flex;
     }
 
-    .field {
+    .board {
         display: flex;
         flex-direction: column;
         align-items: center;
